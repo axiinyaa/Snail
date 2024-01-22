@@ -43,6 +43,9 @@ class Command(Extension):
         if event.author.bot:
             return
         
+        if event.message.embeds[0].footer.text != 'Self Roles':
+            return
+        
         guild_data = self.get_selfrole_data(event.message.guild.id)
         
         role_id, role_name = await self.get_role_data(guild_data, event.message.id, event.message.guild.id, event.emoji)
@@ -58,6 +61,9 @@ class Command(Extension):
     @listen(MessageReactionRemove)
     async def on_reaction_remove(self, event: MessageReactionRemove):
         if event.author.bot:
+            return
+        
+        if event.message.embeds[0].footer.text != 'Self Roles':
             return
         
         guild_data = self.get_selfrole_data(event.message.guild.id)
