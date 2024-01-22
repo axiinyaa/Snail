@@ -8,6 +8,9 @@ class Snaft(Extension):
         if event.message.author.bot:
             return
         
+        if not event.message.channel.id == 634462914136375307:
+            return
+        
         await self.judgement(event.message.content.lower(), event.message)
             
     async def judgement(self, content: str, message):
@@ -29,6 +32,9 @@ class Snaft(Extension):
     @listen()
     async def on_reaction(self, event: MessageReactionAdd):
         if event.author.bot:
+            return
+        
+        if not event.message.channel.id == 634462914136375307:
             return
         
         if 'snaft' not in event.message.content.lower():
