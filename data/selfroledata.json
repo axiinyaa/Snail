@@ -1,0 +1,61 @@
+{
+  "850069038804631572": {
+    "messages": [
+      {
+        "index": 0,
+        "message_id": 1188250901610242151,
+        "channel_id": 850069038804631575,
+        "self_roles": [
+          {
+            "emoji": "\ud83d\ude01",
+            "name": "axii (really awesome and sexy)",
+            "description": "become really awesome and sexy",
+            "id": 1054458295768846396
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "message_id": 1188573178491047967,
+        "channel_id": 1181692967984046100,
+        "self_roles": [
+          {
+            "emoji": 1147281411854839829,
+            "name": "axii",
+            "description": "Become axiinyaa",
+            "id": 1054458295768846396
+          }
+        ]
+      }
+    ]
+  },
+  "1176928818750038126": {
+    "messages": [
+      {
+        "index": 0,
+        "message_id": 1194757378785161277,
+        "channel_id": 1190350619748356256,
+        "self_roles": [
+          {
+            "emoji": "\ud83d\udc4d",
+            "name": "Example Role 1",
+            "description": "This role is really awesome trust me it's the number 1",
+            "id": 1194753868467294349
+          },
+          {
+            "emoji": "\ud83d\ude0e",
+            "name": "Example Role 3",
+            "description": "Actually, this one is fucking awesome",
+            "id": 1194753955897544704
+          },
+          {
+            "emoji": "\ud83e\udd74",
+            "name": "Example Role 2",
+            "description": "WEUIFHWEIUFEWFIUH",
+            "id": 1194753903665889330
+          }
+        ]
+      }
+    ]
+  }
+}
