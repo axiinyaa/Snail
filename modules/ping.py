@@ -1,5 +1,4 @@
 from interactions import *
-from utils.config import get_item
 
 class Command(Extension):
     

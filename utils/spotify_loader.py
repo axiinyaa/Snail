@@ -1,6 +1,6 @@
 from lavalink.models import (DeferredAudioTrack, LoadResult, LoadType, PlaylistInfo, Source)
 
-from utils.spotifyapi import Spotify
+from utils.spotify_api import Spotify
 from utils.config import get_item
 
 spotify = Spotify(client_id=get_item('music', 'spotify', 'id'), secret=get_item('music', 'spotify', 'secret'))
@@ -24,7 +24,7 @@ class CustomAudioTrack(DeferredAudioTrack):
         return base64
 
 
-class CustomSearch(Source):
+class SearchSpotify(Source):
     def __init__(self):
         super().__init__(name='custom')  # Initialising our custom source with the name 'custom'.
 

@@ -11,10 +11,10 @@ from interactions_lavalink import Lavalink, Player
 from interactions_lavalink.events import TrackStart
 from lavalink.models import LoadResult
 
-from utils.CustomMusicLoaders import CustomSearch
-from utils.spotifyapi import Spotify
-from utils.config import get_item, music_config
-from utils.fancysend import fancy_message, fancy_embed
+from utils.spotify_loader import SearchSpotify
+from utils.spotify_api import Spotify
+from utils.config import get_item, get_roles
+from utils.fancysend import fancy_message
 
 spotify = Spotify(client_id=get_item('music', 'spotify', 'id'), secret=get_item('music', 'spotify', 'secret'))
 
@@ -34,7 +34,7 @@ class Music(Extension):
         # Connecting to local lavalink server
         self.lavalink.add_node(node_information['ip'], node_information['port'], node_information['password'], "us")
 
-        self.lavalink.client.register_source(CustomSearch())
+        self.lavalink.client.register_source(SearchSpotify())
 
         print("Music Command Loaded.")
 
@@ -70,7 +70,7 @@ class Music(Extension):
         current = lavalink.format_time(player.position)
         total = lavalink.format_time(track.duration)
 
-        description = f'From **{track.author}**\n\n{progress_bar}\n{current} • {total}'
+        description = f'From **{track.author}**\n### {progress_bar}\n{current} • {total}'
 
         embed = Embed(title=track.title, description=description, url=track.uri, color=0xf7a3e7)
         embed.set_author(name=player_status)
@@ -126,7 +126,7 @@ class Music(Extension):
 
     async def can_modify(self, player: Player, author: User, guild_id: Snowflake):
         
-        role_id = music_config('dj-role')
+        role_id = get_roles('dj-role')
         
         if author.has_role(role_id):
             return True

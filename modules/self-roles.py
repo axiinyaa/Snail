@@ -1,9 +1,8 @@
-from dataclasses import dataclass, asdict
 import json
+from typing import Union
 from interactions import *
 from interactions.api.events import MessageReactionAdd, MessageReactionRemove
-from utils.config import get_item
-from utils.DictToDataclass import dict_to_dataclass
+
 import re
     
 class Command(Extension):
@@ -115,7 +114,7 @@ class Command(Extension):
     async def selfroles(self, ctx: SlashContext):
         return
     
-    def get_field(self, index: int, name: str, emoji: [str | int], description: str):
+    def get_field(self, index: int, name: str, emoji: Union[str | int], description: str):
         return EmbedField(
             name=f'{index}. {name}',
             value=f'{emoji} - *{description}*'

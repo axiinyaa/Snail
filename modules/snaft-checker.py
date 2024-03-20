@@ -1,6 +1,5 @@
 from interactions import *
 from interactions.api.events import MessageCreate, MessageReactionAdd
-import regex
 
 class Snaft(Extension):
     @listen()
