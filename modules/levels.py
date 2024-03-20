@@ -1,7 +1,7 @@
 import random
 from interactions import *
 from interactions.api.events import MessageCreate
-from utils.config import get_roles
+from utils.config import get_roles, get_item
 from database import Levels, grab_mee6_levels_teehee
 
 from datetime import datetime, timedelta
@@ -98,4 +98,11 @@ class Command(Extension):
             embed = Embed(description=f'Congrats! {author.mention} levelled up to **Level {user.level}**!', color=0xf7a3e7)
             embed.set_author(name='Level Up!', icon_url=author.display_avatar.url)
             
-            await event.message.channel.send(embed=embed)
+            level_up_channel = get_item('level_up_channel', int(event.message.guild.id))
+            
+            if level_up_channel is not None:
+                channel = await event.message.guild.fetch_channel(level_up_channel)
+            else:
+                channel = await event.message.channel
+            
+            await channel.send(embed=embed)

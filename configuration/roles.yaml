@@ -1,7 +1,7 @@
 dj-role: "1185407312664461352" # Role ID to use to give someone complete control of the music player regardless of permissions.
 
 role-rewards: # To add roles, simply set a level and the Role ID to give when reaching it.
-  158964992756940800: # Guild ID
+  158964992756940800: # Snail's Shell
     10: "646838508434227200" # Role ID
 
     20: "324950494009229313"
