@@ -6,7 +6,10 @@ def get_item(*items: str) -> Union[dict, str]:
         config = yaml.safe_load(f)
         
         for item in items:
-            config = config[item]
+            config = config.get(item, None)
+            
+            if config is None:
+                return None
             
         return config
 
@@ -16,5 +19,8 @@ def get_roles(*items: str) -> Union[dict, str]:
         
         for item in items:
             config = config.get(item, None)
+            
+            if config is None:
+                return None
             
         return config
