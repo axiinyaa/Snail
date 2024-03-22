@@ -1,6 +1,5 @@
 FROM python:3.11 
-WORKDIR /among
-COPY requirements.txt /among/
+COPY requirements.txt .
 RUN pip install -r requirements.txt
-COPY . /among
-CMD python main.py
+COPY . .
+CMD [ "python", "main.py" ]

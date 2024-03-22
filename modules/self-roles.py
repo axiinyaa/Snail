@@ -42,6 +42,9 @@ class Command(Extension):
         if event.author.bot:
             return
         
+        if not event.message.embeds:
+            return
+        
         if event.message.embeds[0].footer.text != 'Self Roles':
             return
         

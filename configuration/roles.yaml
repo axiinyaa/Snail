@@ -8,5 +8,5 @@ role-rewards: # To add roles, simply set a level and the Role ID to give when re
 
     35: "359127215084142593"
 
-  1176928818750038126:
+  1176928818750038126: # Snail Testing
     5: "1194753868467294349"

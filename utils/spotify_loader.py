@@ -13,8 +13,15 @@ class CustomAudioTrack(DeferredAudioTrack):
     # This makes the DeferredAudioTrack highly efficient, particularly in cases
     # where large playlists are loaded.
 
-    async def load(self, client):  # Load our 'actual' playback track using the metadata from this one.
-        result: LoadResult = await client.get_tracks('ytsearch:{0.title} {0.author}'.format(self))  # Search for our track on YouTube.
+    async def load(self, client):
+        
+        search = 'ytsearch:{0.title} by {0.author}'.format(self)
+        
+        # Load our 'actual' playback track using the metadata from this one.
+        result: LoadResult = await client.get_tracks(search)  # Search for our track on YouTube.
+        
+        if not result.tracks:
+            return None
 
         first_track = result.tracks[0]  # Grab the first track from the results.
         base64 = first_track.track  # Extract the base64 string from the track.
