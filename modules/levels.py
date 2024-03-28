@@ -8,12 +8,12 @@ from datetime import datetime, timedelta
 
 class Command(Extension):
 
-    @slash_command()
+    '''@slash_command()
     async def convert_mee6_levels(self, ctx: SlashContext):
         
         await ctx.send('Grabbing Mee6 Levels...')
         
-        await grab_mee6_levels_teehee()
+        await grab_mee6_levels_teehee()'''
     
     @slash_command()
     @slash_option(
