@@ -219,6 +219,9 @@ class Command(Extension):
         
         await ctx.send('Message has been edited.', ephemeral=True)
         
+    def can_use(self, user: Member):
+        return user.has_permission(Permissions.MANAGE_ROLES)
+        
     @selfroles.subcommand(sub_cmd_description='Add a role to the self role embed message.')
     @slash_default_member_permission(Permissions.MANAGE_ROLES)
     @slash_option(name='message_id', description='The ID of the message to edit.', opt_type=OptionType.STRING, required=True)
@@ -226,6 +229,9 @@ class Command(Extension):
     @slash_option(name='description', description='The description of the role.', opt_type=OptionType.STRING, required=True)
     @slash_option(name='emoji', description='The emoji to use for the role.', opt_type=OptionType.STRING, required=True)
     async def add_role(self, ctx: SlashContext, message_id: int, role: Role, emoji: str, description: str):
+        
+        if not self.can_use(ctx.member):
+            return await ctx.send('You do not have the permissions to use this command.', ephemeral=True)
         
         guild_data = self.get_selfrole_data(ctx.guild_id)
         
@@ -280,6 +286,9 @@ class Command(Extension):
     @slash_option(name='message_id', description='The ID of the message to edit.', opt_type=OptionType.STRING, required=True)
     @slash_option(name='role', description='The role to remove.', opt_type=OptionType.ROLE, required=True)
     async def remove_role(self, ctx: SlashContext, message_id: int, role: Role):
+        
+        if not self.can_use(ctx.member):
+            return await ctx.send('You do not have the permissions to use this command.', ephemeral=True)
         
         guild_data = self.get_selfrole_data(ctx.guild_id)
         
@@ -346,6 +355,9 @@ class Command(Extension):
     @slash_default_member_permission(Permissions.MANAGE_ROLES)
     @slash_option(name='message_id', description='The ID of the message to edit.', opt_type=OptionType.STRING, required=True)
     async def update_message(self, ctx: SlashContext, message_id: int):
+        
+        if not self.can_use(ctx.member):
+            return await ctx.send('You do not have the permissions to use this command.', ephemeral=True)
         
         guild_data = self.get_selfrole_data(ctx.guild_id)
         
