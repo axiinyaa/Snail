@@ -63,9 +63,7 @@ class Command(Extension):
     @listen()
     async def snaft(self, event: MessageCreate):
         
-        if not event.message.guild:
-            return
-        
+
         if event.message.guild.id == 158964992756940800:
             return
         
