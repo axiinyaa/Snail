@@ -132,6 +132,9 @@ class Command(Extension):
     @slash_option(name='color', description='The color of the embed. Use hex color codes.', opt_type=OptionType.STRING, required=False)
     async def create_message(self, ctx: SlashContext, channel: GuildText, title: str, message: str, color: str = ''):
         
+        if not self.can_use(ctx.member):
+            return await ctx.send('You do not have the permissions to use this command.', ephemeral=True)
+        
         color = color.removeprefix('#')
         
         embed = Embed(
@@ -164,6 +167,9 @@ class Command(Extension):
     @slash_option(name='message', description='The message content.', opt_type=OptionType.STRING, required=True)
     @slash_option(name='color', description='The color of the embed. Use hex color codes.', opt_type=OptionType.STRING, required=False)
     async def edit_message(self, ctx: SlashContext, message_id: int, title: str, message: str, color: str = ''):
+        
+        if not self.can_use(ctx.member):
+            return await ctx.send('You do not have the permissions to use this command.', ephemeral=True)
         
         color = color.removeprefix('#')
         
