@@ -63,10 +63,6 @@ class Command(Extension):
     @listen()
     async def snaft(self, event: MessageCreate):
         
-
-        if event.message.guild.id == 158964992756940800:
-            return
-        
         author = event.message.author
         
         if author.bot:
