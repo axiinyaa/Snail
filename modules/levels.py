@@ -98,7 +98,7 @@ class Command(Extension):
             level_up_channel = get_item('level_up_channel', int(event.message.guild.id))
             
             if level_up_channel is not None:
-                channel = event.message.guild.fetch_channel(level_up_channel)
+                channel = await event.message.guild.fetch_channel(level_up_channel)
             else:
                 channel = event.message.channel
             
