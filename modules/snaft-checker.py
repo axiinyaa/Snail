@@ -1,5 +1,5 @@
 from interactions import *
-from interactions.api.events import MessageCreate, MessageReactionAdd
+from interactions.api.events import MessageCreate, MessageReactionAdd, MessageUpdate
 
 class Snaft(Extension):
     @listen()
@@ -39,6 +39,21 @@ class Snaft(Extension):
         if 'snaft' not in event.message.content.lower():
             return
         
+        await event.message.clear_all_reactions()
+        
         await self.judgement(event.message.content.lower(), event.message)
         
-        await event.message.clear_all_reactions()
+    @listen()
+    async def on_update(self, event: MessageUpdate):
+        if event.after.author.bot:
+            return
+        
+        if not event.after.channel.id == 634462914136375307:
+            return
+        
+        if 'snaft' not in event.after.content.lower():
+            return
+        
+        await event.after.clear_all_reactions()
+        
+        await self.judgement(event.after.content.lower(), event.after)
