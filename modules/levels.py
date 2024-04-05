@@ -74,19 +74,6 @@ class Command(Extension):
         if time is not None:
             if datetime.now() < time:
                 return
-            
-        roles: dict[str, str] = get_roles('role-rewards', int(event.message.guild.id))
-            
-        if roles is not None:
-        
-            for level, role in roles.items():
-                if author.has_role(role):
-                    continue
-                
-                if user.level + 1 > int(level):
-                    await author.add_role(role)
-        
-        self.message_pool[author.id] = datetime.now() + timedelta(minutes=1)
         
         levelled_up = await user.add_xp(random.randrange(15, 30))
         
@@ -103,3 +90,16 @@ class Command(Extension):
                 channel = event.message.channel
             
             await channel.send(embed=embed)
+            
+        roles: dict[str, str] = get_roles('role-rewards', int(event.message.guild.id))
+            
+        if roles is not None:
+        
+            for level, role in roles.items():
+                if author.has_role(role):
+                    continue
+                
+                if user.level + 1 > int(level):
+                    await author.add_role(role)
+        
+        self.message_pool[author.id] = datetime.now() + timedelta(minutes=1)
