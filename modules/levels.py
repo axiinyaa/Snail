@@ -89,7 +89,7 @@ class Command(Extension):
                     if author.has_role(role):
                         continue
                     
-                    if user.level > int(level):
+                    if user.level + 1 > int(level):
                         await author.add_role(role)
             
             embed = Embed(description=f'Congrats! {author.mention} levelled up to **Level {user.level}**!', color=0xf7a3e7)
