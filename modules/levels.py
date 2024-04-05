@@ -74,23 +74,23 @@ class Command(Extension):
         if time is not None:
             if datetime.now() < time:
                 return
+            
+        roles: dict[str, str] = get_roles('role-rewards', int(event.message.guild.id))
+            
+        if roles is not None:
+        
+            for level, role in roles.items():
+                if author.has_role(role):
+                    continue
+                
+                if user.level + 1 > int(level):
+                    await author.add_role(role)
         
         self.message_pool[author.id] = datetime.now() + timedelta(minutes=1)
         
         levelled_up = await user.add_xp(random.randrange(15, 30))
         
         if levelled_up:
-            
-            roles: dict[str, str] = get_roles('role-rewards', int(event.message.guild.id))
-            
-            if roles is not None:
-            
-                for level, role in roles.items():
-                    if author.has_role(role):
-                        continue
-                    
-                    if user.level + 1 > int(level):
-                        await author.add_role(role)
             
             embed = Embed(description=f'Congrats! {author.mention} levelled up to **Level {user.level}**!', color=0xf7a3e7)
             embed.set_author(name='Level Up!', icon_url=author.display_avatar.url)
