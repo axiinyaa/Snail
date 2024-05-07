@@ -6,7 +6,7 @@ from database import Levels, grab_mee6_levels_teehee
 
 from datetime import datetime, timedelta
 
-class Command(Extension):
+class Levels(Extension):
 
     '''@slash_command()
     async def convert_mee6_levels(self, ctx: SlashContext):

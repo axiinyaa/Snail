@@ -5,7 +5,7 @@ from interactions.api.events import MessageReactionAdd, MessageReactionRemove
 
 import re
     
-class Command(Extension):
+class SelfRoles(Extension):
     
     async def get_role_data(self, guild_data: dict, message_id: int, guild_id: int, emoji):
         guild_data = self.get_selfrole_data(guild_id)

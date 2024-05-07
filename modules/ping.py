@@ -1,6 +1,6 @@
 from interactions import *
 
-class Command(Extension):
+class Ping(Extension):
     
     @slash_command(description='Pings the bot.')
     async def ping(self, ctx: SlashContext):
