@@ -1,5 +1,5 @@
 PyYAML
-discord-py-interactions
+discord-py-interactions==5.9.2
 lavalink
 interactions-lavalink
 motor
