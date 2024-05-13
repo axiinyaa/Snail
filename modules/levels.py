@@ -2,7 +2,8 @@ import random
 from interactions import *
 from interactions.api.events import MessageCreate
 from utils.config import get_roles, get_item
-from database import Levels, grab_mee6_levels_teehee
+from database import Levels, get_database
+import re
 
 from datetime import datetime, timedelta
 
@@ -57,6 +58,90 @@ class LevelModule(Extension):
         embed.set_author(name=f'{user.display_name}\'s current rank:', icon_url=user.display_avatar.url)
         
         await ctx.send(embed=embed)
+        
+    def get_buttons(self, page: int):
+        return [
+            Button(
+                style=ButtonStyle.RED,
+                label='<',
+                custom_id=f'move_page_-1_{page}'
+            ),
+            Button(
+                style=ButtonStyle.RED,
+                label='>',
+                custom_id=f'move_page_1_{page}'
+            ),
+        ]
+        
+    @slash_command()
+    async def leaderboard(self, ctx: SlashContext):
+        
+        await ctx.defer()
+        
+        documents = await self.get_levelling_data(str(ctx.guild_id))
+        
+        embed = await self.levelling_embed(ctx.author_id, 0, documents)
+        
+        await ctx.send(embed=embed, components=self.get_buttons(page=0))
+            
+    async def get_levelling_data(self, guild_id: str):
+        
+        database = get_database()
+        collection = database.get_collection(guild_id)
+        
+        cursor = collection.find().sort({'total_xp': -1})
+        
+        return await cursor.to_list(length=100)
+            
+    async def levelling_embed(self, uid: int, page: int, levelling_data: list):
+        
+        start_index = page * 10  # Calculate the starting index for the subset
+        end_index = (page + 1) * 10  # Calculate the ending index for the subset
+        
+        documents = levelling_data[start_index:end_index]
+        
+        result = '```ansi\n'
+        
+        is_in_top_100 = -1
+        
+        for i, document in enumerate(documents):
+            user_level_data = Levels(**document)
+            user: User = await self.bot.fetch_user(user_level_data._id)
+            
+            if user.id == uid:
+                is_in_top_100 = i + start_index
+            
+            result += f'{(i + start_index) + 1}. [2;31m[1;31m[1;31m{user.display_name} [1;37m[1;37m[1;37m[1;37m[1;37m- [1;34m[4;34m[4;34m[4;35m{user_level_data.total_xp:,} XP[0m[4;34m[0m[4;34m[0m[1;34m[1;34m[0m[1;34m[0m[1;37m[0m[1;37m[0m[1;37m[0m[1;37m[0m[1;37m[0m[1;31m[0;31m[0;37m[0m[0;31m[0m[1;31m[0m[1;31m[0m[2;31m[0m\n'
+        
+        result += f'```\n\n{f"You are ranked **{is_in_top_100 + 1}.** on this leaderboard." if is_in_top_100 != -1 else "You are not in the top 100, unfortunately!"}'
+        
+        return Embed(
+            'Leaderboard',
+            description=result
+        )
+            
+    page_pattern = re.compile(r'move_page_(.*)_(.*)')
+    @component_callback(page_pattern)
+    async def move_page(self, ctx: ComponentContext):
+        
+        await ctx.defer(edit_origin=True)
+        
+        match_ = self.page_pattern.match(ctx.custom_id)
+        
+        if not match_:
+            return
+        
+        direction = int(match_.group(1))
+        page = int(match_.group(2))
+        
+        documents = await self.get_levelling_data(str(ctx.guild_id))
+        
+        if (page == 0 and direction == -1) or (page == 9 and (direction == 1 or len(documents) < 9)):
+            return
+        
+        embed = await self.levelling_embed(ctx.author_id, page + direction, documents)
+        
+        await ctx.edit_origin(embed=embed, components=self.get_buttons(page=page + direction))
         
     message_pool = {}
         
