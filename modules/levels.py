@@ -113,7 +113,7 @@ class LevelModule(Extension):
             
             result += f'{(i + start_index) + 1}. [2;31m[1;31m[1;31m{user.display_name} [1;37m[1;37m[1;37m[1;37m[1;37m- [1;34m[4;34m[4;34m[4;35m{user_level_data.total_xp:,} XP[0m[4;34m[0m[4;34m[0m[1;34m[1;34m[0m[1;34m[0m[1;37m[0m[1;37m[0m[1;37m[0m[1;37m[0m[1;37m[0m[1;31m[0;31m[0;37m[0m[0;31m[0m[1;31m[0m[1;31m[0m[2;31m[0m\n'
         
-        result += f'```\n\n{f"You are ranked **{is_in_top_100 + 1}.** on this leaderboard." if is_in_top_100 != -1 else "You are not in the top 100, unfortunately!"}'
+        result += f'```'
         
         return Embed(
             'Leaderboard',
