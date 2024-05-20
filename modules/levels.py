@@ -184,7 +184,7 @@ class LevelModule(Extension):
                 if author.has_role(role):
                     continue
                 
-                if user.level + 1 > int(level):
+                if user.level > int(level):
                     await author.add_role(role)
         
         self.message_pool[author.id] = datetime.now() + timedelta(minutes=1)
