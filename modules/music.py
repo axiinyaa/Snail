@@ -415,6 +415,9 @@ class Music(Extension):
     async def autocomplete(self, ctx: AutocompleteContext):
 
         text = ctx.input_text
+        
+        if text == '':
+            text = 'snails house'
 
         raw_text = text
 
