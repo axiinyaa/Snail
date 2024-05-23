@@ -72,7 +72,7 @@ class Music(Extension):
 
         description = f'From **{track.author}**\n### {progress_bar}\n{current} • {total}'
 
-        embed = Embed(title=track.title, description=description, url=track.uri, color=0xf7a3e7)
+        embed = Embed(title=track.title, description=description, url=track.uri, color=0x2B2D31)
         embed.set_author(name=player_status)
         embed.set_thumbnail(self.get_cover_image(track.identifier))
 
@@ -111,7 +111,7 @@ class Music(Extension):
 
         description = f'### Currently Playing:\n**{track.title}** from **{track.author}**\n\n*There are currently* ***{len(player.queue)}*** *songs in the queue.*\n*Approximately* ***{hours} hours*** and ***{minutes} minutes*** *left.*\n### Next Up...\n{queue_list}'
 
-        queue_embed = Embed(description=description, color=0xf7a3e7)
+        queue_embed = Embed(description=description, color=0x2B2D31)
         
         icon = None
         
@@ -125,11 +125,6 @@ class Music(Extension):
         return queue_embed
 
     async def can_modify(self, player: Player, author: User, guild_id: Snowflake):
-        
-        role_id = get_roles('dj-role')
-        
-        if author.has_role(role_id):
-            return True
 
         requester_member: Member = await self.bot.fetch_member(player.current.requester, guild_id)
 
@@ -187,7 +182,7 @@ class Music(Extension):
             title=track.title,
             url=track.uri,
             description=f'From **{track.author}**\n\nSuccessfully added to queue.',
-            color=0x1fef2f
+            color=0x2B2D31
         )
 
         add_to_queue_embed.set_author(name='Requested by ' + ctx.author.user.username,
@@ -418,9 +413,6 @@ class Music(Extension):
 
         text = ctx.input_text
 
-        if text == '':
-            text = 'Snails House'
-
         raw_text = text
 
         if len(text) > 25:
@@ -579,7 +571,7 @@ class Music(Extension):
         if len(lyrics) > 4080:
             song = f'{lyrics[:2080]}...\n\nGet the full lyrics [here.]({lyrics.url})'
 
-        return Embed(title=f'{track.title} Lyrics', description=lyrics, color=0x8b00cc, footer=EmbedFooter(text=f'Lyrics provided by Some Random API'))
+        return Embed(title=f'{track.title} Lyrics', description=lyrics, color=0x2B2D31, footer=EmbedFooter(text=f'Lyrics provided by Some Random API'))
 
     async def on_player(self, player: Player, channel: GuildText):
 
