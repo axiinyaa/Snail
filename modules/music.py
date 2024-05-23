@@ -638,7 +638,7 @@ class Music(Extension):
 
         embed.set_footer(text='Requested by ' + requester.username, icon_url=requester.avatar_url)
 
-        message = await message.edit(content='<:nikosleepy:1027492467337080872>', embed=embed, components=[])
+        message = await message.edit(content='', embed=embed, components=[])
 
     @component_callback('queue', 'loop', 'playpause', 'skip', 'lyrics')
     async def buttons(self, ctx: ComponentContext):
