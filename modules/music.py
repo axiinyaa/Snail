@@ -133,6 +133,9 @@ class Music(Extension):
         if Permissions.MANAGE_CHANNELS in author.guild_permissions:
             return True
 
+        if requester_member.has_role(408460140371509254):
+            return True
+
         if not voice_state or not voice_state.channel:
             return False
 
