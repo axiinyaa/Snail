@@ -37,6 +37,13 @@ class Music(Extension):
         self.lavalink.client.register_source(SearchSpotify())
 
         print("Music Command Loaded.")
+        
+    @slash_command()
+    @slash_option(name="song", description="Input a search term, or paste a link.", opt_type=OptionType.STRING, required=True, autocomplete=True)
+    async def p(self, ctx: SlashContext, song: str):
+        'Play a song.'
+        
+        await self.play(ctx, song)
 
     @slash_command(description="Listen to music!")
     async def music(self, ctx: SlashContext):
