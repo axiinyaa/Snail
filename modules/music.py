@@ -9,7 +9,6 @@ from interactions import *
 from interactions.api.events import *
 from interactions_lavalink import Lavalink, Player
 from interactions_lavalink.events import TrackStart
-from lavalink.models import LoadResult
 
 from utils.spotify_loader import SearchSpotify
 from utils.spotify_api import Spotify
@@ -32,7 +31,7 @@ class Music(Extension):
         node_information: dict = get_item('music', 'node_information')
 
         # Connecting to local lavalink server
-        self.lavalink.add_node(node_information['ip'], node_information['port'], node_information['password'], "us")
+        self.lavalink.add_node(node_information['ip'], node_information['port'], node_information['password'], 'eu')
 
         self.lavalink.client.register_source(SearchSpotify())
 
@@ -171,6 +170,8 @@ class Music(Extension):
 
         # Connecting to voice channel and getting player instance
         player = await self.lavalink.connect(voice_state.guild.id, voice_state.channel.id)
+        
+        await player.set_volume(100)
 
         result: LoadResult = await self.lavalink.client.get_tracks(song, check_local=True)  # type: ignore
         tracks = result.tracks
@@ -661,6 +662,7 @@ class Music(Extension):
     async def buttons(self, ctx: ComponentContext):
 
         player: Player = self.lavalink.get_player(ctx.guild_id)
+        msg = player.fetch("")
 
         if player is None:
             return
