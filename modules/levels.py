@@ -98,22 +98,29 @@ class LevelModule(Extension):
         start_index = page * 10  # Calculate the starting index for the subset
         end_index = (page + 1) * 10  # Calculate the ending index for the subset
         
+        is_in_top_100 = -1
+        
+        for i, document in enumerate(levelling_data):
+            user_level_data = Levels(**document)
+            
+            if user_level_data._id == str(uid):
+                is_in_top_100 = i + start_index + 1
+                break
+        
         documents = levelling_data[start_index:end_index]
         
         result = '```ansi\n'
-        
-        is_in_top_100 = -1
         
         for i, document in enumerate(documents):
             user_level_data = Levels(**document)
             user: User = await self.bot.fetch_user(user_level_data._id)
             
-            if user.id == uid:
-                is_in_top_100 = i + start_index
-            
-            result += f'{(i + start_index) + 1}. [2;31m[1;31m[1;31m{user.display_name} [1;37m[1;37m[1;37m[1;37m[1;37m- [1;34m[4;34m[4;34m[4;35m{user_level_data.total_xp:,} XP[0m[4;34m[0m[4;34m[0m[1;34m[1;34m[0m[1;34m[0m[1;37m[0m[1;37m[0m[1;37m[0m[1;37m[0m[1;37m[0m[1;31m[0;31m[0;37m[0m[0;31m[0m[1;31m[0m[1;31m[0m[2;31m[0m\n'
-        
+            result += f'{(i + start_index) + 1}. [2;31m[1;31m[1;31m{user.display_name} (Lvl: {user_level_data.level}) [1;37m[1;37m[1;37m[1;37m[1;37m- [1;34m[4;34m[4;34m[4;35m{user_level_data.total_xp:,} XP[0m[4;34m[0m[4;34m[0m[1;34m[1;34m[0m[1;34m[0m[1;37m[0m[1;37m[0m[1;37m[0m[1;37m[0m[1;37m[0m[1;31m[0;31m[0;37m[0m[0;31m[0m[1;31m[0m[1;31m[0m[2;31m[0m\n'
+
         result += f'```'
+        
+        if is_in_top_100 != -1:
+            result += f'\nYou are currently rank #{is_in_top_100}.'
         
         return Embed(
             'Leaderboard',
