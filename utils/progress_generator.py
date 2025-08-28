@@ -2,14 +2,14 @@ def generate_progress_bar(length: int, max_value: float, current_value: float) -
 
     emojis = {
         'empty': {
-            'a': '<:progress_left_empty:1410756998626152580>',
-            'b': '<:progress_middle_empty:1410756985305038888>',
-            'c': '<:progress_right_empty:1410756975326662676>'
+            'a': '<:progress_left_empty:1410773890757820426>',
+            'b': '<:progress_middle_empty:1410773880045309952>',
+            'c': '<:progress_right_empty:1410773870042022010>'
         },
         'filled': {
-            'a': '<:progress_left_filled:1410756954393149490>',
-            'b': '<:progress_middle_filled:1410756941990330388>',
-            'c': '<:progress_right_filled:1410756964849549373>'
+            'a': '<:progress_left_filled:1410773849338810540>',
+            'b': '<:progress_middle_filled:1410773837091700806>',
+            'c': '<:progress_right_filled:1410773859145355336>'
         }
     }
 
