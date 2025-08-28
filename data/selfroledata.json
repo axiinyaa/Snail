@@ -26,6 +26,32 @@
             "id": 1054458295768846396
           }
         ]
+      },
+      {
+        "index": 2,
+        "message_id": 1410771595047211089,
+        "channel_id": 1181692967984046100,
+        "self_roles": [
+          {
+            "emoji": "\ud83d\udc0c",
+            "name": "snail",
+            "description": "snale",
+            "id": 1188291519359238236
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "message_id": 1410772198570070017,
+        "channel_id": 1181692967984046100,
+        "self_roles": [
+          {
+            "emoji": "\ud83d\udc0c",
+            "name": "snail",
+            "description": "become snale",
+            "id": 1188291519359238236
+          }
+        ]
       }
     ]
   },

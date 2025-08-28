@@ -2,8 +2,21 @@ import random
 from interactions import *
 from interactions.api.events import MessageCreate
 from utils.config import get_roles, get_item
+from utils.progress_generator import generate_progress_bar
 from database import Levels, get_database
 import re
+
+from interactions.models.discord.components import (
+  SectionComponent,
+  Button,
+  TextDisplayComponent,
+  ContainerComponent,
+  ButtonStyle,
+  ActionRow,
+  SeparatorComponent,
+  ThumbnailComponent,
+  UnfurledMediaItem,
+)
 
 from datetime import datetime, timedelta
 
@@ -21,18 +34,15 @@ class LevelModule(Extension):
         'user',
         'Check the rank of another user.',
         OptionType.USER,
-        required=True
+        required=False
     )
-    async def rank(self, ctx: SlashContext, user: User):
+    async def rank(self, ctx: SlashContext, user: User = None):
         '''View your current rank, and the XP needed to get to the next level.'''
+
+        if user is None:
+            user = ctx.author
         
         await ctx.defer()
-        
-        # Bar Parameters
-        bar_empty = '░'
-        bar_filled = '█'
-        
-        bar_length = 15
         
         # Getting Level information
         player: Levels = await Levels(user.id, str(ctx.guild_id)).fetch()
@@ -40,21 +50,10 @@ class LevelModule(Extension):
         xp_needed = player.calculate_xp_needed(player.level)
         
         current_xp = player.current_xp
-        
-        #cereal has 26000k xp
-        
-        current_progress = round((current_xp / xp_needed) * bar_length)
-        
-        progress_bar = ''
-        
-        for bar in range(bar_length):
-            if bar < current_progress:
-                progress_bar += bar_filled
-                continue
+
+        progress_bar = generate_progress_bar(12, xp_needed, current_xp)
             
-            progress_bar += bar_empty
-            
-        embed = Embed(description=f'**{current_xp:,} / {xp_needed:,} XP** - **Level {player.level}**\n{progress_bar}', color=0xf7a3e7)
+        embed = Embed(description=f'**Level {player.level}**{progress_bar}{current_xp:,} / {xp_needed:,} XP', color=0xf7a3e7)
         embed.set_author(name=f'{user.display_name}\'s current rank:', icon_url=user.display_avatar.url)
         
         await ctx.send(embed=embed)
@@ -79,10 +78,11 @@ class LevelModule(Extension):
         await ctx.defer()
         
         documents = await self.get_levelling_data(str(ctx.guild_id))
+        player: Levels = await Levels(ctx.author.id, str(ctx.guild_id)).fetch()
         
-        embed = await self.levelling_embed(ctx.author_id, 0, documents)
+        embed = await self.levelling_embed(ctx.author_id, 0, documents, player)
         
-        await ctx.send(embed=embed, components=self.get_buttons(page=0))
+        await ctx.send(embed=embed, components=self.get_buttons(page=0), ephemeral=True)
             
     async def get_levelling_data(self, guild_id: str):
         
@@ -93,10 +93,10 @@ class LevelModule(Extension):
         
         return await cursor.to_list(length=100)
             
-    async def levelling_embed(self, uid: int, page: int, levelling_data: list):
-        
-        start_index = page * 10  # Calculate the starting index for the subset
-        end_index = (page + 1) * 10  # Calculate the ending index for the subset
+    async def levelling_embed(self, uid: int, page: int, levelling_data: list, player: Levels):
+
+        start_index = page * 20  # Calculate the starting index for the subset
+        end_index = (page + 1) * 20  # Calculate the ending index for the subset
         
         is_in_top_100 = -1
         
@@ -108,8 +108,8 @@ class LevelModule(Extension):
                 break
         
         documents = levelling_data[start_index:end_index]
-        
-        result = '```ansi\n'
+
+        result = f'**Current Level:** {player.level}\n```ansi\n'
         
         for i, document in enumerate(documents):
             user_level_data = Levels(**document)
@@ -171,7 +171,7 @@ class LevelModule(Extension):
         
         if levelled_up:
             
-            embed = Embed(description=f'Congrats! {author.mention} levelled up to **Level {user.level}**!', color=0xf7a3e7)
+            embed = Embed(description=f'Congrats! **{author.username}** levelled up to **Level {user.level}**! 🎉', color=0xf7a3e7)
             embed.set_author(name='Level Up!', icon_url=author.display_avatar.url)
             
             level_up_channel = get_item('level_up_channel', int(event.message.guild.id))
@@ -181,7 +181,7 @@ class LevelModule(Extension):
             else:
                 channel = event.message.channel
             
-            await channel.send(embed=embed)
+            await channel.send(content=author.mention, embed=embed)
             
         roles: dict[str, str] = get_roles('role-rewards', int(event.message.guild.id))
             

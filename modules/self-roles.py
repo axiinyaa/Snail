@@ -108,7 +108,7 @@ class SelfRoles(Extension):
         if embed.footer is None:
             return False
         
-        if embed.footer.text != 'Self Role':
+        if embed.footer.text != 'Self Roles':
             return False
         
         return True
@@ -145,7 +145,7 @@ class SelfRoles(Extension):
         if color:
             embed.color = int(color, 16)
             
-        embed.set_footer('Self Role')
+        embed.set_footer('Self Roles')
 
         msg = await channel.send(embed=embed)
         

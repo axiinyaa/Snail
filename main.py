@@ -24,7 +24,7 @@ async def on_startup(event: Startup):
 @listen()
 async def snaft(event: MessageCreate):
     
-    discord_regex = re.search(r'(https?:\/\/)?(www\.)?(discord\.(gg|io|me|li)|discordapp\.com\/invite)\/.+[a-z]', event.message.content)
+    discord_regex = re.search(r'^(https?:\/\/)(discord)\.((\w+\/invite\/)|(gg\/))\w+$', event.message.content)
     
     user = event.message.author
     
@@ -54,5 +54,7 @@ async def snaft(event: MessageCreate):
                     color=0xf7a3e7
                 )
             )
+        else:
+            print('Couldn\'t ban user because they have been in the server for too long.')
     
 bot.start()
