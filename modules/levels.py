@@ -95,8 +95,8 @@ class LevelModule(Extension):
             
     async def levelling_embed(self, uid: int, page: int, levelling_data: list, player: Levels):
 
-        start_index = page * 20  # Calculate the starting index for the subset
-        end_index = (page + 1) * 20  # Calculate the ending index for the subset
+        start_index = page * 10  # Calculate the starting index for the subset
+        end_index = (page + 1) * 10  # Calculate the ending index for the subset
         
         is_in_top_100 = -1
         
