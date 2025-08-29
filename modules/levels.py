@@ -109,7 +109,7 @@ class LevelModule(Extension):
         
         documents = levelling_data[start_index:end_index]
 
-        result = f'**Current Level:** {player.level}\n```ansi\n'
+        result = f'**Your Current Level:** {player.level}\n```ansi\n'
         
         for i, document in enumerate(documents):
             user_level_data = Levels(**document)
@@ -146,7 +146,9 @@ class LevelModule(Extension):
         if (page == 0 and direction == -1) or (page == 9 and (direction == 1 or len(documents) < 9)):
             return
         
-        embed = await self.levelling_embed(ctx.author_id, page + direction, documents)
+        player: Levels = await Levels(ctx.author.id, str(ctx.guild_id)).fetch()
+        
+        embed = await self.levelling_embed(ctx.author_id, page + direction, documents, player)
         
         await ctx.edit_origin(embed=embed, components=self.get_buttons(page=page + direction))
         
