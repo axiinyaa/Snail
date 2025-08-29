@@ -51,8 +51,9 @@ class Snaft(Extension):
         if not event.after.channel.id == 634462914136375307:
             return
         
-        if 'snaft' not in event.after.content.lower():
-            return
+        if event.before.content != 'snaft':
+            if 'snaft' not in event.after.content.lower():
+                return
         
         await event.after.clear_all_reactions()
         
