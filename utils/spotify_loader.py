@@ -15,13 +15,9 @@ class CustomAudioTrack(DeferredAudioTrack):
 	async def load(self, client): # Load our 'actual' playback track using the metadata from this one.
 
 		isrc_search = f'ytmsearch:"{self.isrc}"'
-		bc_search = f'bcsearch:{self.title} {self.author}'
-		last_search = f'ytmsearch:{self.title} {self.author}'
+		last_search = f'ytsearch:{self.author} "{self.title}"'
 
 		result: LoadResult = await client.get_tracks(isrc_search, check_local=True)
-
-		if result.load_type == LoadType.EMPTY:
-			result: LoadResult = await client.get_tracks(bc_search, check_local=True)
 
 		if result.load_type == LoadType.EMPTY:
 			result: LoadResult = await client.get_tracks(last_search, check_local=True)
