@@ -110,12 +110,12 @@ class Spotify:
 						except:
 							get_items = data
 
-						for item in get_items['items']:
+						for item in get_items.get('items', []):
 							track = create_track(item['track'])
 
 							tracks.append(track)
 
-						url = get_items['next']
+						url = get_items.get('next', None)
 
 						if url is None:
 							break

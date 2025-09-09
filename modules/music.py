@@ -163,7 +163,7 @@ class Music(Extension):
 
         if len(tracks) == 0:
             await message.delete()
-            return await fancy_message(ctx, "No results found.", color=0xff0000, ephemeral=True)
+            return await fancy_message(ctx, "Error! No tracks found or this is a Spotify owned playlist. [Learn More](https://developer.spotify.com/blog/2024-11-27-changes-to-the-web-api)", color=0xff0000, ephemeral=True)
 
         player.store('Channel', ctx.channel)
 
@@ -208,13 +208,13 @@ class Music(Extension):
 
         player = await self.lavalink.connect(voice_state.guild.id, voice_state.channel.id)
 
-        track: list[lavalink.AudioTrack] = await player.get_tracks(file.url)
+        tracks: list[lavalink.AudioTrack] = await player.get_tracks(file.url)
 
-        if len(track) == 0:
+        if len(tracks) == 0:
             return await fancy_message(ctx, "Attachment must either be a video or audio file.", color=0xff0000,
                                        ephemeral=True)
 
-        track: lavalink.AudioTrack = track[0]
+        track: lavalink.AudioTrack = tracks[0]
 
         track.title = file.filename
         track.uri = file.url
@@ -678,7 +678,7 @@ class Music(Extension):
 
         player: Player = self.lavalink.get_player(ctx.guild_id)
 
-        page = player.fetch('current_page')
+        page: int = player.fetch('current_page')
 
         if ctx.custom_id == 'left':
             if page == 1:
